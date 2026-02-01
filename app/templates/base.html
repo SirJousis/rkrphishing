@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Ethical Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="/" class="brand">RKR Phish</a>
+
+            {% if current_user.is_authenticated %}
+            <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+                <span style="color: var(--text-muted); font-size: 0.875rem;">
+                    <strong>{{ current_user.username }}</strong>
+                    <span style="opacity: 0.7;">({{ current_user.client.name }})</span>
+                </span>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline">Logout</a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+    <!-- Add navbar styles inline here or in CSS (I put them in CSS already? maybe not specific nav ones) -->
+
+    <main class="container">
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="alerts">
+            {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+
+</html>

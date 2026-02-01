@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="client-dashboard">
+    <header class="dashboard-header">
+        <div>
+            <h1>Dashboard Overview</h1>
+            <p>Welcome, <strong>{{ current_user.username }}</strong> from <em>{{ client.name }}</em></p>
+        </div>
+
+        <div class="controls">
+            <form action="{{ url_for('dashboard.index') }}" method="GET" class="campaign-select-form">
+                <select name="campaign_id" onchange="this.form.submit()">
+                    <option value="">All Campaigns</option>
+                    {% for camp in campaigns %}
+                    <option value="{{ camp.id }}" {% if selected_campaign_id==camp.id %}selected{% endif %}>
+                        {{ camp.name }} (ID: {{ camp.id }})
+                    </option>
+                    {% endfor %}
+                </select>
+            </form>
+            <a href="{{ url_for('api_keys.view_api_key') }}" class="btn btn-outline">API Settings</a>
+        </div>
+    </header>
+
+    <!-- Metrics Cards -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <h3>Total Visits</h3>
+            <p class="metric-value">{{ total_visits }}</p>
+        </div>
+        <div class="metric-card">
+            <h3>Unique Victims</h3>
+            <p class="metric-value">{{ unique_visitors }}</p>
+        </div>
+        <div class="metric-card danger">
+            <h3>Credentials Captured</h3>
+            <p class="metric-value">{{ credentials_captured }}</p>
+        </div>
+        <div class="metric-card">
+            <h3>Clicks</h3>
+            <p class="metric-value">{{ clicks }}</p>
+        </div>
+    </div>
+
+    <!-- Charts Area -->
+    <section class="charts-section">
+        <div class="card">
+            <h2>Activity Over Time (Mockup)</h2>
+            <div class="chart-container">
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Pass data to JS -->
+<script>
+    const chartData = {
+        visits: "{{ total_visits }}",
+        creds: "{{ credentials_captured }}"
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}

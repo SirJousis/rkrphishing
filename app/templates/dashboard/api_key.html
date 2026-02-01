@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>API Key</title>
+</head>
+<body>
+
+<h1>Dashboard – API Key</h1>
+
+<p><strong>Cliente:</strong> {{ client.name }}</p>
+
+<p><strong>API Key:</strong></p>
+<pre>{{ client.api_key }}</pre>
+
+{% if is_admin %}
+<form method="POST" action="/dashboard/api-key/rotate">
+    <button type="submit">Regenerar API Key</button>
+</form>
+{% else %}
+<p>No tienes permisos para regenerar la API key.</p>
+{% endif %}
+
+</body>
+</html>

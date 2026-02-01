@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <header class="dashboard-header">
+        <div>
+            <h1>Admin Panel</h1>
+            <p>System Management & Configuration</p>
+        </div>
+        <div class="tabs-nav">
+            <button class="tab-btn active" onclick="showTab('clients', event)">Clients</button>
+            <button class="tab-btn" onclick="showTab('users', event)">Users</button>
+            <button class="tab-btn" onclick="showTab('campaigns', event)">Campaigns</button>
+        </div>
+    </header>
+
+    <!-- TAB: CLIENTS -->
+    <div id="clients" class="tab-pane active">
+        <section class="card">
+            <div class="table-header">
+                <h2>Registered Clients</h2>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>API Key</th>
+                            <th>Created</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if clients %}
+                        {% for client in clients %}
+                        <tr>
+                            <td>{{ client.id }}</td>
+                            <td><strong>{{ client.name }}</strong></td>
+                            <td class="code-font">{{ client.api_key[:12] }}...</td>
+                            <td>{{ client.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td>
+                                <form action="{{ url_for('admin.delete_client', id=client.id) }}" method="POST"
+                                    style="display:inline;"
+                                    onsubmit="return confirm('Delete client and all its data?')">
+                                    <button type="submit" class="danger-text"
+                                        style="background:none; border:none; cursor:pointer; font-weight:600;">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">No clients yet.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <aside class="mg-actions">
+            <div class="card">
+                <h3>Create New Client</h3>
+                <form action="{{ url_for('admin.create_client') }}" method="POST">
+                    <div class="form-group">
+                        <label for="clientName">Name</label>
+                        <input type="text" id="clientName" name="name" required placeholder="Acme Corp">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%">Register Client</button>
+                </form>
+            </div>
+            <div class="card" style="border-top: 3px solid var(--primary);">
+                <h3>Quick Edit</h3>
+                <form action="" method="POST" id="editClientForm">
+                    <div class="form-group">
+                        <label>Select Client</label>
+                        <select id="editClientId" required
+                            onchange="document.getElementById('editClientForm').action='/admin/client/update/' + this.value">
+                            <option value="">-- Choose --</option>
+                            {% for client in clients %}
+                            <option value="{{ client.id }}">{{ client.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>New Name</label>
+                        <input type="text" name="name" placeholder="Change name to...">
+                    </div>
+                    <button type="submit" class="btn btn-outline" style="width:100%">Update Name</button>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- TAB: USERS -->
+    <div id="users" class="tab-pane">
+        <section class="card">
+            <div class="table-header">
+                <h2>Platform Users</h2>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Organization</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if users %}
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td><strong>{{ user.username }}</strong></td>
+                            <td>{{ user.client.name }}</td>
+                            <td><span class="badge">{{ user.role }}</span></td>
+                            <td>
+                                <form action="{{ url_for('admin.delete_user', id=user.id) }}" method="POST"
+                                    style="display:inline;" onsubmit="return confirm('Delete user?')">
+                                    <button type="submit" class="danger-text"
+                                        style="background:none; border:none; cursor:pointer; font-weight:600;">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">No users found.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <aside class="mg-actions">
+            <div class="card">
+                <h3>Create New User</h3>
+                <form action="{{ url_for('admin.create_user') }}" method="POST">
+                    <div class="form-group">
+                        <label>Select Organization</label>
+                        <select name="client_id" required>
+                            <option value="">-- Choose Organization --</option>
+                            {% for client in clients %}
+                            <option value="{{ client.id }}">{{ client.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select name="role">
+                            <option value="analyst">Analyst</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-secondary" style="width:100%">Create User</button>
+                </form>
+            </div>
+            <div class="card" style="border-top: 3px solid var(--primary);">
+                <h3>Quick Edit User</h3>
+                <form action="" method="POST" id="editUserForm">
+                    <div class="form-group">
+                        <label>Select User to Edit</label>
+                        <select id="editUserId" required
+                            onchange="document.getElementById('editUserForm').action='/admin/user/update/' + this.value">
+                            <option value="">-- Select --</option>
+                            {% for u in users %}
+                            <option value="{{ u.id }}">{{ u.username }} ({{ u.client.name }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>New Username</label>
+                        <input type="text" name="username" placeholder="Leave blank">
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" name="password" placeholder="Leave blank">
+                    </div>
+                    <div class="form-group">
+                        <label>Change Role</label>
+                        <select name="role">
+                            <option value="">-- Keep Same --</option>
+                            <option value="analyst">Analyst</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-outline" style="width:100%">Update User</button>
+                </form>
+            </div>
+        </aside>
+    </div>
+
+    <!-- TAB: CAMPAIGNS -->
+    <div id="campaigns" class="tab-pane">
+        <section class="card">
+            <div class="table-header">
+                <h2>Active Campaigns</h2>
+            </div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Owner Client</th>
+                            <th>Date Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if campaigns %}
+                        {% for camp in campaigns %}
+                        <tr>
+                            <td>{{ camp.id }}</td>
+                            <td><strong>{{ camp.name }}</strong></td>
+                            <td>{{ camp.client.name }}</td>
+                            <td>{{ camp.created_at.strftime('%Y-%m-%d') }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">No active campaigns.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <aside class="mg-actions">
+            <div class="card">
+                <h3>Launch New Campaign</h3>
+                <form action="{{ url_for('admin.create_campaign') }}" method="POST">
+                    <div class="form-group">
+                        <label>Target Organization</label>
+                        <select name="client_id" required>
+                            <option value="">-- Select Client --</option>
+                            {% for client in clients %}
+                            <option value="{{ client.id }}">{{ client.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Campaign Title</label>
+                        <input type="text" name="name" required placeholder="e.g. Q4 Security Audit">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width:100%">Start Campaign</button>
+                </form>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+    function showTab(tabId, event) {
+        // Hide all panes
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        // Deactivate all buttons
+        document.querySelectorAll('.tabs-nav .tab-btn').forEach(b => b.classList.remove('active'));
+
+        // Show selected
+        document.getElementById(tabId).classList.add('active');
+        // Active button
+        if (event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+        }
+    }
+</script>
+{% endblock %}
