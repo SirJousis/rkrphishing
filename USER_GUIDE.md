@@ -34,35 +34,40 @@ RKR Phishing Platform es una herramienta ética de simulación de phishing dise�
 
 ### Instalación
 
-1. **Clonar el repositorio**
+1. **Instalar librerías del sistema**
+```bash
+sudo apt-get install python3-dev default-libmysqlclient-dev build-essential
+```
+
+2. **Clonar el repositorio**
 ```bash
 cd /ruta/a/tu/proyecto
 ```
 
-2. **Crear entorno virtual**
+3. **Crear entorno virtual**
 ```bash
 python3 -m venv venv
 source venv/bin/activate  # En Windows: venv\Scripts\activate
 ```
 
-3. **Instalar dependencias**
+4. **Instalar dependencias**
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Configurar base de datos**
+5. **Configurar base de datos**
 Edita `instance/config.py`:
 ```python
 SQLALCHEMY_DATABASE_URI = "mysql://usuario:contraseña@localhost/nombre_bd"
 ```
 
-5. **Inicializar la base de datos**
+6. **Inicializar la base de datos**
 ```bash
 python3 scripts/reset_db.py
 python3 scripts/create_admin.py
 ```
 
-6. **Ejecutar la aplicación**
+7. **Ejecutar la aplicación**
 ```bash
 python3 wsgi.py
 ```
@@ -425,3 +430,4 @@ python3 scripts/nombre_script.py
 **Versión:** 1.0  
 **Última actualización:** Febrero 2026  
 **Desarrollado por:** RKR Security Team
+
