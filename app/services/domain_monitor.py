@@ -30,7 +30,7 @@ class DomainMonitorService:
         for i in range(len(name) - 1):
             swapped = list(name)
             swapped[i], swapped[i+1] = swapped[i+1], swapped[i]
-            variations.add(f"{"".join(swapped)}.{tld}")
+            variations.add(f"{''.join(swapped)}.{tld}")
             
         # 4. Common Character Substitutions (Homoglyphs - simplified)
         substitutions = {
