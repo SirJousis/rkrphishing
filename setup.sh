@@ -6,15 +6,15 @@
 set -e # Exit on error
 
 echo "--- 1. Instalando dependencias del sistema ---"
-sudo apt update
-sudo apt install -y python3 python3-pip python3-venv python3-dev \
+apt update
+apt install -y python3 python3-pip python3-venv python3-dev \
     mariadb-server mariadb-client nginx build-essential \
     libssl-dev libffi-dev default-libmysqlclient-dev pkg-config \
     certbot python3-certbot-nginx git curl ufw
 
 echo "--- 2. Iniciando y configurando MariaDB ---"
-sudo systemctl start mariadb
-sudo systemctl enable mariadb
+systemctl start mariadb
+systemctl enable mariadb
 
 # Variables de la base de datos
 DB_NAME="rkrphishing"
@@ -22,7 +22,7 @@ DB_USER="rkr_user"
 DB_PASS="6303ade57187a1a69d13fa540eb01725dc4b103de7cbd7592b07de9d302721d4"
 
 echo "Configurando base de datos y usuario..."
-sudo mariadb -u root <<EOF
+mariadb -u root <<EOF
 CREATE DATABASE IF NOT EXISTS $DB_NAME;
 CREATE USER IF NOT EXISTS '$DB_USER'@'localhost' IDENTIFIED BY '$DB_PASS';
 GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost';
@@ -32,7 +32,7 @@ EOF
 
 echo "Importando esquema desde database_schema.sql..."
 if [ -f "database_schema.sql" ]; then
-    sudo mariadb -u root $DB_NAME < database_schema.sql
+    mariadb -u root $DB_NAME < database_schema.sql
 else
     echo "¡ADVERTENCIA! No se encontró database_schema.sql. Saltando importación."
 fi
