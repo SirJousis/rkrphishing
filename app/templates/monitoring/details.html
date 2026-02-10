@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="monitoring-details">
+    <header class="dashboard-header">
+        <div>
+            <h1>Results for <u>{{ monitored.domain }}</u></h1>
+            <p>Discovery results for potential impersonation domains.</p>
+        </div>
+        <div class="controls">
+            <form action="{{ url_for('monitoring.scan_now', id=monitored.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-primary">Scan Now</button>
+            </form>
+            <a href="{{ url_for('monitoring.index') }}" class="btn btn-outline">Back to List</a>
+        </div>
+    </header>
+
+    <div class="card">
+        <h2>Detected Domains</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Discovery Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in discovered %}
+                    <tr>
+                        <td><strong>{{ item.domain }}</strong></td>
+                        <td>{{ item.discovered_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>
+                            <span class="status-pill status-{{ item.status }}">
+                                {{ item.status | capitalize }}
+                            </span>
+                        </td>
+                        <td>
+                            <form action="{{ url_for('monitoring.update_discovery', id=item.id) }}" method="POST"
+                                class="status-form">
+                                <select name="status" onchange="this.form.submit()" class="form-select-sm">
+                                    <option value="potential" {% if item.status=='potential' %}selected{% endif %}>
+                                        Potential</option>
+                                    <option value="malicious" {% if item.status=='malicious' %}selected{% endif %}>
+                                        Malicious</option>
+                                    <option value="whitelisted" {% if item.status=='whitelisted' %}selected{% endif %}>
+                                        Whitelisted</option>
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">No variations found yet. Try running a manual scan.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .status-pill {
+        padding: 0.2rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .status-potential {
+        background: #fef9c3;
+        color: #854d0e;
+    }
+
+    .status-malicious {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .status-whitelisted {
+        background: #f1f5f9;
+        color: #475569;
+    }
+
+    .form-select-sm {
+        padding: 0.2rem;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        font-size: 0.875rem;
+    }
+</style>
+{% endblock %}

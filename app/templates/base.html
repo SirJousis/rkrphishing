@@ -23,6 +23,7 @@
                     <strong>{{ current_user.username }}</strong>
                     <span style="opacity: 0.7;">({{ current_user.client.name }})</span>
                 </span>
+                <a href="{{ url_for('monitoring.index') }}" class="btn btn-sm btn-outline">Domain Monitoring</a>
                 <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline">Logout</a>
             </div>
             {% endif %}

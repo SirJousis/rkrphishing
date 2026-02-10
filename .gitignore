@@ -1,3 +1,12 @@
 venv/
 __pycache__/
+Docker/
 cookies.txt
+.env
+.dockerignore
+*.pyc
+DEPLOYMENT_AWS.md
+DEPLOYMENT_HOME_SERVER.md
+USER_GUIDE.md
+Dockerfile
+docker-compose.yml

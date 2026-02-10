@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="monitoring-container">
+    <header class="dashboard-header">
+        <div>
+            <h1>Domain Monitoring</h1>
+            <p>Monitor your domains for potential impersonation and phishing attempts.</p>
+        </div>
+        <div class="controls">
+            <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline">Back to Dashboard</a>
+        </div>
+    </header>
+
+    <div class="grid-two-cols">
+        <!-- Add Domain Form -->
+        <div class="card">
+            <h2>Track New Domain</h2>
+            <form action="{{ url_for('monitoring.add_domain') }}" method="POST" class="standard-form">
+                <div class="form-group">
+                    <label for="domain">Domain Name</label>
+                    <input type="text" id="domain" name="domain" placeholder="example.com" required>
+                    <small>Enter the official domain you want to protect.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Start Monitoring</button>
+            </form>
+        </div>
+
+        <!-- System Stats / Info -->
+        <div class="card bg-dark">
+            <h2>Protection Info</h2>
+            <p>Our system uses advanced typosquatting detection to find:</p>
+            <ul>
+                <li>Character omissions and swaps</li>
+                <li>Common homoglyphs and substitutions</li>
+                <li>Lookalike TLDs (.co, .online, etc)</li>
+                <li>Malicious prefixes and suffixes</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Monitored Domains List -->
+    <div class="card mt-2">
+        <h2>Active Monitoring</h2>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Domain</th>
+                        <th>Started At</th>
+                        <th>Discovered Threats</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in monitored_domains %}
+                    <tr>
+                        <td><strong>{{ item.domain }}</strong></td>
+                        <td>{{ item.created_at.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <span
+                                class="badge {{ 'badge-danger' if item.discovered_domains|length > 0 else 'badge-success' }}">
+                                {{ item.discovered_domains|length }} potential threats
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{{ url_for('monitoring.details', id=item.id) }}"
+                                    class="btn btn-sm btn-primary">View Results</a>
+                                <form action="{{ url_for('monitoring.delete_domain', id=item.id) }}" method="POST"
+                                    style="display:inline;" onsubmit="return confirm('Stop monitoring this domain?')">
+                                    <button type="submit" class="btn btn-sm btn-danger">Stop</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">No domains are being monitored yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .grid-two-cols {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .mt-2 {
+        margin-top: 2rem;
+    }
+
+    .badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: bold;
+    }
+
+    .badge-danger {
+        background: #fee2e2;
+        color: #991b1b;
+    }
+
+    .badge-success {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .bg-dark {
+        background: #f8fafc;
+        border-left: 4px solid var(--primary-color);
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+    }
+</style>
+{% endblock %}
