@@ -30,7 +30,7 @@
                 <tbody>
                     {% for item in discovered %}
                     <tr>
-                        <td><strong>{{ item.domain }}</strong></td>
+                        <td><strong class="brand-accent">{{ item.domain }}</strong></td>
                         <td>{{ item.discovered_at.strftime('%Y-%m-%d %H:%M') }}</td>
                         <td>
                             <span class="status-pill status-{{ item.status }}">
@@ -64,32 +64,39 @@
 
 <style>
     .status-pill {
-        padding: 0.2rem 0.6rem;
-        border-radius: 12px;
+        padding: 0.2rem 0.75rem;
+        border-radius: 999px;
         font-size: 0.75rem;
         font-weight: 600;
+        font-family: var(--font-heading);
+        border: 1px solid transparent;
     }
 
     .status-potential {
-        background: #fef9c3;
-        color: #854d0e;
+        background: rgba(255, 191, 0, 0.1);
+        color: #ffbf00;
+        border-color: #ffbf00;
     }
 
     .status-malicious {
-        background: #fee2e2;
-        color: #991b1b;
+        background: rgba(255, 77, 77, 0.1);
+        color: var(--danger);
+        border-color: var(--danger);
     }
 
     .status-whitelisted {
-        background: #f1f5f9;
-        color: #475569;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-muted);
+        border-color: var(--border);
     }
 
     .form-select-sm {
-        padding: 0.2rem;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-        font-size: 0.875rem;
+        background: var(--bg-card-inner);
+        color: var(--text-main);
+        padding: 0.3rem 0.5rem;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        font-size: 0.85rem;
     }
 </style>
 {% endblock %}

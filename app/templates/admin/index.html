@@ -43,8 +43,7 @@
                                 <form action="{{ url_for('admin.delete_client', id=client.id) }}" method="POST"
                                     style="display:inline;"
                                     onsubmit="return confirm('Delete client and all its data?')">
-                                    <button type="submit" class="danger-text"
-                                        style="background:none; border:none; cursor:pointer; font-weight:600;">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-outline danger-text">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -70,7 +69,7 @@
                     <button type="submit" class="btn btn-primary" style="width:100%">Register Client</button>
                 </form>
             </div>
-            <div class="card" style="border-top: 3px solid var(--primary);">
+            <div class="card">
                 <h3>Quick Edit</h3>
                 <form action="" method="POST" id="editClientForm">
                     <div class="form-group">
@@ -115,14 +114,13 @@
                         {% for user in users %}
                         <tr>
                             <td>{{ user.id }}</td>
-                            <td><strong>{{ user.username }}</strong></td>
+                            <td><strong class="brand-accent">{{ user.username }}</strong></td>
                             <td>{{ user.client.name }}</td>
-                            <td><span class="badge">{{ user.role }}</span></td>
+                            <td><span class="badge badge-success">{{ user.role }}</span></td>
                             <td>
                                 <form action="{{ url_for('admin.delete_user', id=user.id) }}" method="POST"
                                     style="display:inline;" onsubmit="return confirm('Delete user?')">
-                                    <button type="submit" class="danger-text"
-                                        style="background:none; border:none; cursor:pointer; font-weight:600;">Delete</button>
+                                    <button type="submit" class="btn btn-sm btn-outline danger-text">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -165,10 +163,10 @@
                             <option value="admin">Administrator</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-secondary" style="width:100%">Create User</button>
+                    <button type="submit" class="btn btn-primary" style="width:100%">Create User</button>
                 </form>
             </div>
-            <div class="card" style="border-top: 3px solid var(--primary);">
+            <div class="card">
                 <h3>Quick Edit User</h3>
                 <form action="" method="POST" id="editUserForm">
                     <div class="form-group">
@@ -224,7 +222,7 @@
                         {% for camp in campaigns %}
                         <tr>
                             <td>{{ camp.id }}</td>
-                            <td><strong>{{ camp.name }}</strong></td>
+                            <td><strong class="brand-accent">{{ camp.name }}</strong></td>
                             <td>{{ camp.client.name }}</td>
                             <td>{{ camp.created_at.strftime('%Y-%m-%d') }}</td>
                         </tr>
@@ -262,6 +260,30 @@
         </aside>
     </div>
 </div>
+
+<style>
+    .admin-dashboard .tab-pane.active {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+    }
+
+    .badge {
+        padding: 0.2rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        background: rgba(87, 199, 112, 0.1);
+        color: var(--success);
+        border: 1px solid var(--success);
+    }
+
+    @media (max-width: 992px) {
+        .admin-dashboard .tab-pane.active {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
 <script>
     function showTab(tabId, event) {

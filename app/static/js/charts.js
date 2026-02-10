@@ -13,10 +13,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 label: 'Campaign Performance',
                 data: [chartData.visits, chartData.creds],
                 backgroundColor: [
-                    '#6366f1',
-                    '#ef4444'
+                    '#29b6d8', // Teal
+                    'rgba(87, 199, 112, 0.4)' // Green with opacity
                 ],
-                borderWidth: 0
+                borderColor: [
+                    '#29b6d8',
+                    '#57c770'
+                ],
+                borderWidth: 2
             }]
         },
         options: {
@@ -25,9 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { color: '#94a3b8' }
+                    labels: {
+                        color: '#8a9ba8',
+                        font: { family: "'Space Grotesk', sans-serif" }
+                    }
                 }
-            }
+            },
+            cutout: '70%'
         }
     });
 });

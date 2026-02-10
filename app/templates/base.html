@@ -6,25 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phishing Ethical Platform</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <!-- Fonts -->
+    <!-- Fonts: Space Grotesk for Headings, Manrope for Body -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <div class="bg-overlay"></div>
     <nav class="navbar">
         <div class="container nav-container">
-            <a href="/" class="brand">RKR Phish</a>
+            <a href="/" class="brand">
+                <span class="brand-accent">RKR</span> PHISH
+            </a>
 
             {% if current_user.is_authenticated %}
-            <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
-                <span style="color: var(--text-muted); font-size: 0.875rem;">
-                    <strong>{{ current_user.username }}</strong>
-                    <span style="opacity: 0.7;">({{ current_user.client.name }})</span>
-                </span>
-                <a href="{{ url_for('monitoring.index') }}" class="btn btn-sm btn-outline">Domain Monitoring</a>
-                <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline">Logout</a>
+            <div class="user-menu">
+                <div class="user-info">
+                    <span class="username">{{ current_user.username }}</span>
+                    <span class="client-name">{{ current_user.client.name }}</span>
+                </div>
+                <div class="nav-links">
+                    <a href="{{ url_for('monitoring.index') }}" class="btn btn-sm btn-ghost">Monitoring</a>
+                    <a href="{{ url_for('auth.logout') }}" class="btn btn-sm btn-outline">Logout</a>
+                </div>
             </div>
             {% endif %}
         </div>

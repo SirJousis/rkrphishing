@@ -48,28 +48,29 @@
                     <tr>
                         <th>Domain</th>
                         <th>Started At</th>
-                        <th>Discovered Threats</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for item in monitored_domains %}
                     <tr>
-                        <td><strong>{{ item.domain }}</strong></td>
+                        <td><strong class="brand-accent">{{ item.domain }}</strong></td>
                         <td>{{ item.created_at.strftime('%Y-%m-%d') }}</td>
                         <td>
                             <span
                                 class="badge {{ 'badge-danger' if item.discovered_domains|length > 0 else 'badge-success' }}">
-                                {{ item.discovered_domains|length }} potential threats
+                                {{ item.discovered_domains|length }} threats
                             </span>
                         </td>
                         <td>
-                            <div class="action-buttons">
+                            <div class="nav-links">
                                 <a href="{{ url_for('monitoring.details', id=item.id) }}"
-                                    class="btn btn-sm btn-primary">View Results</a>
+                                    class="btn btn-sm btn-primary">Details</a>
                                 <form action="{{ url_for('monitoring.delete_domain', id=item.id) }}" method="POST"
-                                    style="display:inline;" onsubmit="return confirm('Stop monitoring this domain?')">
-                                    <button type="submit" class="btn btn-sm btn-danger">Stop</button>
+                                    style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-outline danger-text"
+                                        onclick="return confirm('Stop monitoring?')">Stop</button>
                                 </form>
                             </div>
                         </td>
@@ -98,29 +99,29 @@
     }
 
     .badge {
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        font-weight: bold;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        font-family: var(--font-heading);
     }
 
     .badge-danger {
-        background: #fee2e2;
-        color: #991b1b;
+        background: rgba(255, 77, 77, 0.1);
+        color: var(--danger);
+        border: 1px solid var(--danger);
     }
 
     .badge-success {
-        background: #dcfce7;
-        color: #166534;
+        background: rgba(87, 199, 112, 0.1);
+        color: var(--success);
+        border: 1px solid var(--success);
     }
 
-    .bg-dark {
-        background: #f8fafc;
-        border-left: 4px solid var(--primary-color);
-    }
-
-    .table-responsive {
-        overflow-x: auto;
+    @media (max-width: 768px) {
+        .grid-two-cols {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 {% endblock %}
